@@ -72,7 +72,7 @@
   }
 
   .volume-control {
-    display: flex;
+    display: none; /* Masqué par défaut, remplacé par bouton Play */
     align-items: center;
     gap: 0.5rem;
   }
@@ -81,16 +81,16 @@
     width: 100px;
   }
 
-  main {
-    max-width: 1000px;
-    margin: auto;
+  .play-button {
+    background: none;
+    border: none;
+    color: var(--primary-color);
+    font-size: 1.2rem;
+    cursor: pointer;
   }
 
-  section {
-    padding: 4rem 1rem;
-    scroll-margin-top: 80px;
-  }
-
+  main { max-width: 1000px; margin: auto; }
+  section { padding: 4rem 1rem; scroll-margin-top: 80px; }
   #presentation { background-color: var(--background1); }
   #reglement { background-color: var(--background2); }
   #nous-rejoindre { background-color: var(--background1); }
@@ -138,7 +138,8 @@
   <a href="#presentation">Présentation</a>
   <a href="#reglement">Règlement</a>
   <a href="#nous-rejoindre">Nous rejoindre</a>
-  <div class="volume-control">
+  <button id="play-button" class="play-button">▶️</button>
+  <div class="volume-control" id="volume-control">
     <label for="volume-range">Volume :</label>
     <input type="range" id="volume-range" min="0" max="1" step="0.01" value="0.3">
   </div>
@@ -185,26 +186,43 @@
   <p>&copy; 2025 La Taverne des Petits Streamers – Tous droits réservés.</p>
 </footer>
 
-<!-- Musique de fond -->
-<audio id="background-music" autoplay loop>
+<audio id="background-music" loop>
   <source src="background-music.mp3" type="audio/mpeg">
   Ton navigateur ne supporte pas l'audio.
 </audio>
 
 <script>
-  // Révèle le lien Discord au clic
-  const button = document.getElementById('show-link-button');
-  const linkDiv = document.getElementById('discord-link');
+  const audio = document.getElementById("background-music");
+  const playButton = document.getElementById("play-button");
+  const volumeControl = document.getElementById("volume-control");
+  const volumeRange = document.getElementById("volume-range");
 
-  button.addEventListener('click', () => {
-    button.style.display = 'none';
-    linkDiv.style.display = 'block';
+  // Play music and show volume slider
+  playButton.addEventListener("click", () => {
+    audio.volume = volumeRange.value;
+    audio.play();
+    playButton.style.display = "none";
+    volumeControl.style.display = "flex";
   });
 
-  // Copie le lien Discord au clic
-  linkDiv.addEventListener('click', () => {
+  // Volume control
+  volumeRange.addEventListener("input", () => {
+    audio.volume = volumeRange.value;
+  });
+
+  // Révéler lien Discord
+  const showLinkButton = document.getElementById("show-link-button");
+  const discordLink = document.getElementById("discord-link");
+
+  showLinkButton.addEventListener("click", () => {
+    showLinkButton.style.display = "none";
+    discordLink.style.display = "block";
+  });
+
+  // Copier le lien
+  discordLink.addEventListener("click", () => {
     const range = document.createRange();
-    range.selectNode(linkDiv);
+    range.selectNode(discordLink);
     window.getSelection().removeAllRanges();
     window.getSelection().addRange(range);
 
@@ -216,15 +234,6 @@
     }
 
     window.getSelection().removeAllRanges();
-  });
-
-  // Volume de la musique
-  const audio = document.getElementById("background-music");
-  const volumeRange = document.getElementById("volume-range");
-  audio.volume = 0.3;
-
-  volumeRange.addEventListener("input", () => {
-    audio.volume = volumeRange.value;
   });
 </script>
 
