@@ -60,9 +60,7 @@
     font-weight: bold;
     transition: color 0.3s;
   }
-  nav a:hover {
-    color: var(--primary-color);
-  }
+  nav a:hover { color: var(--primary-color); }
   main {
     max-width: 1000px;
     margin: auto;
@@ -104,11 +102,11 @@
     text-align: center;
     padding: 1rem;
   }
-  /* Style des contrôles audio */
+  /* Style des contrôles audio avec espacement réduit */
   .audio-controls {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 0.2rem; /* Réduit l'espacement entre les boutons */
   }
   .audio-controls button {
     background: none;
@@ -192,24 +190,16 @@
   const muteBtn = document.getElementById("mute-btn");
   const volumeControl = document.getElementById("volume-control");
 
-  // Play
-  playBtn.addEventListener("click", () => {
-    audio.play();
-  });
-  // Stop
+  playBtn.addEventListener("click", () => { audio.play(); });
   stopBtn.addEventListener("click", () => {
     audio.pause();
     audio.currentTime = 0;
   });
-  // Mute
   muteBtn.addEventListener("click", () => {
     audio.muted = !audio.muted;
     muteBtn.textContent = audio.muted ? "🔈" : "🔇";
   });
-  // Volume
-  volumeControl.addEventListener("input", () => {
-    audio.volume = volumeControl.value;
-  });
+  volumeControl.addEventListener("input", () => { audio.volume = volumeControl.value; });
 </script>
 
 </body>
