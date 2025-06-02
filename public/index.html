@@ -186,10 +186,8 @@
   <h3>🎶 <span style="color: yellow;">Jukebox</span></h3>
   <ul id="playlist"></ul>
   <div>
-    <button id="prev">⏮️</button>
     <button id="play">▶️</button>
     <button id="pause">⏸️</button>
-    <button id="next">⏭️</button>
   </div>
   <input type="range" id="volume" min="0" max="1" step="0.01" value="0.3">
 </div>
@@ -198,51 +196,28 @@
 
 <script>
   const musiques = [
-    { nom: "Musique de fond", fichier: "background-music.mp3" },
-    { nom: "Musique 2", fichier: "musique2.mp3" },
-    { nom: "Musique 3", fichier: "musique3.mp3" }
+    { nom: "Main Theme", fichier: "background-music.mp3" }
   ];
   const audio = document.getElementById("audio");
   const playlist = document.getElementById("playlist");
   const volumeRange = document.getElementById("volume");
-  let current = 0;
+
   musiques.forEach((m, i) => {
     const li = document.createElement("li");
     li.textContent = m.nom;
-    li.addEventListener("click", () => {
-      current = i;
-      loadMusic();
-      audio.play();
-      updateActive();
-    });
+    li.classList.add("active");
     playlist.appendChild(li);
   });
-  function loadMusic() {
-    audio.src = musiques[current].fichier;
-    updateActive();
-  }
-  function updateActive() {
-    playlist.querySelectorAll("li").forEach((li, i) => {
-      li.classList.toggle("active", i === current);
-    });
-  }
+
   document.getElementById("play").addEventListener("click", () => audio.play());
   document.getElementById("pause").addEventListener("click", () => audio.pause());
-  document.getElementById("prev").addEventListener("click", () => {
-    current = (current - 1 + musiques.length) % musiques.length;
-    loadMusic();
-    audio.play();
-  });
-  document.getElementById("next").addEventListener("click", () => {
-    current = (current + 1) % musiques.length;
-    loadMusic();
-    audio.play();
-  });
-  volumeRange.addEventListener("input", () => {
-    audio.volume = volumeRange.value;
-  });
-  loadMusic();
+  volumeRange.addEventListener("input", () => { audio.volume = volumeRange.value; });
+
+  // Initialisation
+  audio.src = musiques[0].fichier;
   audio.volume = volumeRange.value;
+
+  // Révèle le lien Discord
   const showLinkButton = document.getElementById("show-link-button");
   const discordLink = document.getElementById("discord-link");
   showLinkButton.addEventListener("click", () => {
