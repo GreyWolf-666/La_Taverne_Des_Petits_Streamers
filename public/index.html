@@ -53,7 +53,6 @@
     top: 0;
     background-color: rgba(51, 51, 51, 0.95);
     display: flex;
-    align-items: center;
     justify-content: center;
     gap: 2rem;
     padding: 1rem;
@@ -71,26 +70,16 @@
     color: var(--primary-color);
   }
 
-  .volume-control {
-    display: none; /* Masqué par défaut, remplacé par bouton Play */
-    align-items: center;
-    gap: 0.5rem;
+  main {
+    max-width: 1000px;
+    margin: auto;
   }
 
-  .volume-control input[type="range"] {
-    width: 100px;
+  section {
+    padding: 4rem 1rem;
+    scroll-margin-top: 80px;
   }
 
-  .play-button {
-    background: none;
-    border: none;
-    color: var(--primary-color);
-    font-size: 1.2rem;
-    cursor: pointer;
-  }
-
-  main { max-width: 1000px; margin: auto; }
-  section { padding: 4rem 1rem; scroll-margin-top: 80px; }
   #presentation { background-color: var(--background1); }
   #reglement { background-color: var(--background2); }
   #nous-rejoindre { background-color: var(--background1); }
@@ -129,6 +118,56 @@
     text-align: center;
     padding: 1rem;
   }
+
+  /* Jukebox */
+  #jukebox {
+    position: fixed;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+    background: rgba(51, 51, 51, 0.7);
+    padding: 1rem;
+    border-radius: 8px 0 0 8px;
+    z-index: 9999;
+    width: 200px;
+  }
+
+  #jukebox h3 {
+    margin: 0 0 0.5rem;
+    color: var(--primary-color);
+    font-size: 1rem;
+    text-align: center;
+  }
+
+  #jukebox ul {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 0.5rem;
+    max-height: 150px;
+    overflow-y: auto;
+  }
+
+  #jukebox li {
+    cursor: pointer;
+    padding: 0.3rem;
+    transition: background 0.3s;
+  }
+
+  #jukebox li:hover { background: rgba(255,255,255,0.1); }
+  #jukebox li.active { background: rgba(255,255,255,0.2); }
+
+  #jukebox button {
+    background: none;
+    border: none;
+    color: var(--primary-color);
+    font-size: 1.2rem;
+    margin: 0.2rem;
+    cursor: pointer;
+  }
+
+  #jukebox input[type="range"] {
+    width: 100%;
+  }
 </style>
 </head>
 <body>
@@ -138,11 +177,6 @@
   <a href="#presentation">Présentation</a>
   <a href="#reglement">Règlement</a>
   <a href="#nous-rejoindre">Nous rejoindre</a>
-  <button id="play-button" class="play-button">▶️</button>
-  <div class="volume-control" id="volume-control">
-    <label for="volume-range">Volume :</label>
-    <input type="range" id="volume-range" min="0" max="1" step="0.01" value="0.3">
-  </div>
 </nav>
 
 <header id="top">
@@ -158,27 +192,18 @@
   <section id="reglement">
     <h2>Règlement</h2>
     <ul>
-      <li><strong>Respect 🫶🏻</strong> – Le respect est essentiel, pour les streamers comme pour la communauté. Tout manque de respect entraînera avertissement ou sanction.</li>
-      <li><strong>MP 📩</strong> – Pas de MP forcés ! Si la personne ne répond pas, n’insistez pas.</li>
-      <li><strong>Pas de haine ✌🏻</strong> – Pas de messages haineux : vous n’êtes pas obligé de suivre un streamer si son contenu ne vous plaît pas.</li>
-      <li><strong>Salons vocaux 🎤</strong> – Les salons sont là pour jouer ensemble : amusez-vous, mais respectez les autres !</li>
+      <li><strong>Respect 🫶🏻</strong> – Le respect est essentiel, pour les streamers comme pour la communauté.</li>
+      <li><strong>MP 📩</strong> – Pas de MP forcés ! Si la personne ne répond pas, n’insiste pas.</li>
+      <li><strong>Pas de haine ✌🏻</strong> – Pas de messages haineux : on n’est pas obligé de tout aimer.</li>
+      <li><strong>Salons vocaux 🎤</strong> – Pour jouer ensemble, dans la bonne humeur !</li>
     </ul>
   </section>
 
   <section id="nous-rejoindre">
     <h2>Nous rejoindre</h2>
     <p>Pour nous rejoindre, clique sur le bouton ci-dessous. Le lien Discord apparaîtra et tu pourras le copier !</p>
-    <button class="big-button" id="show-link-button">
-      Rejoindre notre Discord
-    </button>
-    <div id="discord-link" class="discord-link">
-      https://discord.gg/DkGXawvzaa
-    </div>
-  </section>
-
-  <section id="contact">
-    <h2>Contact</h2>
-    <p>Tu peux nous contacter directement sur Discord !</p>
+    <button class="big-button" id="show-link-button">Rejoindre notre Discord</button>
+    <div id="discord-link" class="discord-link">https://discord.gg/DkGXawvzaa</div>
   </section>
 </main>
 
@@ -186,54 +211,87 @@
   <p>&copy; 2025 La Taverne des Petits Streamers – Tous droits réservés.</p>
 </footer>
 
-<audio id="background-music" loop>
-  <source src="background-music.mp3" type="audio/mpeg">
-  Ton navigateur ne supporte pas l'audio.
-</audio>
+<!-- Jukebox -->
+<div id="jukebox">
+  <h3>🎶 Jukebox</h3>
+  <ul id="playlist"></ul>
+  <div>
+    <button id="prev">⏮️</button>
+    <button id="play">▶️</button>
+    <button id="pause">⏸️</button>
+    <button id="next">⏭️</button>
+  </div>
+  <input type="range" id="volume" min="0" max="1" step="0.01" value="0.3">
+</div>
+
+<audio id="audio"></audio>
 
 <script>
-  const audio = document.getElementById("background-music");
-  const playButton = document.getElementById("play-button");
-  const volumeControl = document.getElementById("volume-control");
-  const volumeRange = document.getElementById("volume-range");
+  const musiques = [
+    { nom: "Musique 1", fichier: "musique1.mp3" },
+    { nom: "Musique 2", fichier: "musique2.mp3" },
+    { nom: "Musique 3", fichier: "musique3.mp3" }
+  ];
 
-  // Play music and show volume slider
-  playButton.addEventListener("click", () => {
-    audio.volume = volumeRange.value;
-    audio.play();
-    playButton.style.display = "none";
-    volumeControl.style.display = "flex";
+  const audio = document.getElementById("audio");
+  const playlist = document.getElementById("playlist");
+  const volumeRange = document.getElementById("volume");
+  let current = 0;
+
+  musiques.forEach((m, i) => {
+    const li = document.createElement("li");
+    li.textContent = m.nom;
+    li.addEventListener("click", () => {
+      current = i;
+      loadMusic();
+      audio.play();
+      updateActive();
+    });
+    playlist.appendChild(li);
   });
 
-  // Volume control
+  function loadMusic() {
+    audio.src = musiques[current].fichier;
+    updateActive();
+  }
+
+  function updateActive() {
+    playlist.querySelectorAll("li").forEach((li, i) => {
+      li.classList.toggle("active", i === current);
+    });
+  }
+
+  document.getElementById("play").addEventListener("click", () => audio.play());
+  document.getElementById("pause").addEventListener("click", () => audio.pause());
+  document.getElementById("prev").addEventListener("click", () => {
+    current = (current - 1 + musiques.length) % musiques.length;
+    loadMusic();
+    audio.play();
+  });
+  document.getElementById("next").addEventListener("click", () => {
+    current = (current + 1) % musiques.length;
+    loadMusic();
+    audio.play();
+  });
+
   volumeRange.addEventListener("input", () => {
     audio.volume = volumeRange.value;
   });
 
-  // Révéler lien Discord
+  // Initialisation
+  loadMusic();
+  audio.volume = volumeRange.value;
+
+  // Discord bouton
   const showLinkButton = document.getElementById("show-link-button");
   const discordLink = document.getElementById("discord-link");
-
   showLinkButton.addEventListener("click", () => {
     showLinkButton.style.display = "none";
     discordLink.style.display = "block";
   });
-
-  // Copier le lien
   discordLink.addEventListener("click", () => {
-    const range = document.createRange();
-    range.selectNode(discordLink);
-    window.getSelection().removeAllRanges();
-    window.getSelection().addRange(range);
-
-    try {
-      document.execCommand('copy');
-      alert('Lien Discord copié !');
-    } catch (err) {
-      console.error('Impossible de copier le lien :', err);
-    }
-
-    window.getSelection().removeAllRanges();
+    navigator.clipboard.writeText(discordLink.textContent);
+    alert("Lien Discord copié !");
   });
 </script>
 
