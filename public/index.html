@@ -11,7 +11,6 @@
     --background1: #2a2a2a;
     --background2: #1f1f1f;
   }
-
   body {
     margin: 0;
     font-family: Arial, sans-serif;
@@ -19,7 +18,6 @@
     color: #eee;
     scroll-behavior: smooth;
   }
-
   header {
     background-image: url('https://i.ibb.co/GQt23qdD/taverne-jpeg.png');
     background-size: cover;
@@ -32,14 +30,12 @@
     text-align: center;
     position: relative;
   }
-
   header::after {
     content: '';
     position: absolute;
     top: 0; left: 0; width: 100%; height: 100%;
     background-color: rgba(0,0,0,0.5);
   }
-
   header h1 {
     position: relative;
     color: #fff;
@@ -47,7 +43,6 @@
     margin: 0;
     z-index: 1;
   }
-
   nav {
     position: sticky;
     top: 0;
@@ -58,36 +53,23 @@
     padding: 1rem;
     z-index: 10;
   }
-
   nav a {
     color: #eee;
     text-decoration: none;
     font-weight: bold;
     transition: color 0.3s;
   }
-
-  nav a:hover {
-    color: var(--primary-color);
-  }
-
-  main {
-    max-width: 1000px;
-    margin: auto;
-  }
-
+  nav a:hover { color: var(--primary-color); }
+  main { max-width: 1000px; margin: auto; }
   section {
     padding: 4rem 1rem;
     scroll-margin-top: 80px;
   }
-
   #presentation { background-color: var(--background1); }
   #reglement { background-color: var(--background2); }
   #nous-rejoindre { background-color: var(--background1); }
-  #contact { background-color: var(--background2); }
-
   h2 { color: var(--primary-color); margin-bottom: 1rem; }
   ul { padding-left: 1rem; }
-
   .big-button {
     font-size: 33px;
     font-family: Arial, sans-serif;
@@ -99,9 +81,7 @@
     cursor: pointer;
     transition: background-color 0.3s;
   }
-
   .big-button:hover { background-color: #ffbf00; }
-
   .discord-link {
     display: none;
     margin-top: 2rem;
@@ -112,13 +92,11 @@
     cursor: pointer;
     user-select: all;
   }
-
   footer {
     background-color: var(--secondary-color);
     text-align: center;
     padding: 1rem;
   }
-
   /* Jukebox */
   #jukebox {
     position: fixed;
@@ -131,14 +109,12 @@
     z-index: 9999;
     width: 200px;
   }
-
   #jukebox h3 {
     margin: 0 0 0.5rem;
     color: var(--primary-color);
     font-size: 1rem;
     text-align: center;
   }
-
   #jukebox ul {
     list-style: none;
     padding: 0;
@@ -146,16 +122,13 @@
     max-height: 150px;
     overflow-y: auto;
   }
-
   #jukebox li {
     cursor: pointer;
     padding: 0.3rem;
     transition: background 0.3s;
   }
-
   #jukebox li:hover { background: rgba(255,255,255,0.1); }
   #jukebox li.active { background: rgba(255,255,255,0.2); }
-
   #jukebox button {
     background: none;
     border: none;
@@ -164,10 +137,7 @@
     margin: 0.2rem;
     cursor: pointer;
   }
-
-  #jukebox input[type="range"] {
-    width: 100%;
-  }
+  #jukebox input[type="range"] { width: 100%; }
 </style>
 </head>
 <body>
@@ -213,7 +183,7 @@
 
 <!-- Jukebox -->
 <div id="jukebox">
-  <h3>🎶 Jukebox</h3>
+  <h3>🎶 <span style="color: yellow;">Jukebox</span></h3>
   <ul id="playlist"></ul>
   <div>
     <button id="prev">⏮️</button>
@@ -224,20 +194,18 @@
   <input type="range" id="volume" min="0" max="1" step="0.01" value="0.3">
 </div>
 
-<audio id="audio"></audio>
+<audio id="audio" autoplay loop></audio>
 
 <script>
   const musiques = [
-    { nom: "Musique 1", fichier: "musique1.mp3" },
+    { nom: "Musique de fond", fichier: "background-music.mp3" },
     { nom: "Musique 2", fichier: "musique2.mp3" },
     { nom: "Musique 3", fichier: "musique3.mp3" }
   ];
-
   const audio = document.getElementById("audio");
   const playlist = document.getElementById("playlist");
   const volumeRange = document.getElementById("volume");
   let current = 0;
-
   musiques.forEach((m, i) => {
     const li = document.createElement("li");
     li.textContent = m.nom;
@@ -249,18 +217,15 @@
     });
     playlist.appendChild(li);
   });
-
   function loadMusic() {
     audio.src = musiques[current].fichier;
     updateActive();
   }
-
   function updateActive() {
     playlist.querySelectorAll("li").forEach((li, i) => {
       li.classList.toggle("active", i === current);
     });
   }
-
   document.getElementById("play").addEventListener("click", () => audio.play());
   document.getElementById("pause").addEventListener("click", () => audio.pause());
   document.getElementById("prev").addEventListener("click", () => {
@@ -273,16 +238,11 @@
     loadMusic();
     audio.play();
   });
-
   volumeRange.addEventListener("input", () => {
     audio.volume = volumeRange.value;
   });
-
-  // Initialisation
   loadMusic();
   audio.volume = volumeRange.value;
-
-  // Discord bouton
   const showLinkButton = document.getElementById("show-link-button");
   const discordLink = document.getElementById("discord-link");
   showLinkButton.addEventListener("click", () => {
