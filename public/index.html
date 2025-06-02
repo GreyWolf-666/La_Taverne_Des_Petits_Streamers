@@ -53,6 +53,7 @@
     top: 0;
     background-color: rgba(51, 51, 51, 0.95);
     display: flex;
+    align-items: center;
     justify-content: center;
     gap: 2rem;
     padding: 1rem;
@@ -70,6 +71,16 @@
     color: var(--primary-color);
   }
 
+  .volume-control {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .volume-control input[type="range"] {
+    width: 100px;
+  }
+
   main {
     max-width: 1000px;
     margin: auto;
@@ -80,30 +91,13 @@
     scroll-margin-top: 80px;
   }
 
-  #presentation {
-    background-color: var(--background1);
-  }
+  #presentation { background-color: var(--background1); }
+  #reglement { background-color: var(--background2); }
+  #nous-rejoindre { background-color: var(--background1); }
+  #contact { background-color: var(--background2); }
 
-  #reglement {
-    background-color: var(--background2);
-  }
-
-  #nous-rejoindre {
-    background-color: var(--background1);
-  }
-
-  #contact {
-    background-color: var(--background2);
-  }
-
-  h2 {
-    color: var(--primary-color);
-    margin-bottom: 1rem;
-  }
-
-  ul {
-    padding-left: 1rem;
-  }
+  h2 { color: var(--primary-color); margin-bottom: 1rem; }
+  ul { padding-left: 1rem; }
 
   .big-button {
     font-size: 33px;
@@ -117,9 +111,7 @@
     transition: background-color 0.3s;
   }
 
-  .big-button:hover {
-    background-color: #ffbf00;
-  }
+  .big-button:hover { background-color: #ffbf00; }
 
   .discord-link {
     display: none;
@@ -130,17 +122,6 @@
     border-radius: 8px;
     cursor: pointer;
     user-select: all;
-  }
-
-  .volume-control {
-    margin-top: 2rem;
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-  }
-
-  .volume-control input[type="range"] {
-    width: 150px;
   }
 
   footer {
@@ -157,6 +138,10 @@
   <a href="#presentation">Présentation</a>
   <a href="#reglement">Règlement</a>
   <a href="#nous-rejoindre">Nous rejoindre</a>
+  <div class="volume-control">
+    <label for="volume-range">Volume :</label>
+    <input type="range" id="volume-range" min="0" max="1" step="0.01" value="0.3">
+  </div>
 </nav>
 
 <header id="top">
@@ -187,11 +172,6 @@
     </button>
     <div id="discord-link" class="discord-link">
       https://discord.gg/DkGXawvzaa
-    </div>
-
-    <div class="volume-control">
-      <label for="volume-range">Volume :</label>
-      <input type="range" id="volume-range" min="0" max="1" step="0.01" value="0.3">
     </div>
   </section>
 
@@ -238,10 +218,10 @@
     window.getSelection().removeAllRanges();
   });
 
-  // Gestion du volume de la musique
+  // Volume de la musique
   const audio = document.getElementById("background-music");
   const volumeRange = document.getElementById("volume-range");
-  audio.volume = 0.3; // Volume initial à 30%
+  audio.volume = 0.3;
 
   volumeRange.addEventListener("input", () => {
     audio.volume = volumeRange.value;
