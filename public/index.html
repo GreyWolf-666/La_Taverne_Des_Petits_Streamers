@@ -14,7 +14,7 @@
 
   body {
     margin: 0;
-    font-family: Arial, sans-serif;
+    font-family: "Arial", sans-serif;
     background-color: #222;
     color: #eee;
     scroll-behavior: smooth;
@@ -25,21 +25,18 @@
     top: 0;
     background-color: rgba(51, 51, 51, 0.95);
     display: flex;
+    justify-content: center;
     align-items: center;
-    justify-content: space-between;
-    padding: 0.5rem 1rem;
-    z-index: 10;
-  }
-
-  nav .nav-links {
-    display: flex;
     gap: 1rem;
+    padding: 0.5rem 1rem;
+    z-index: 1000;
   }
 
   nav a {
     color: #eee;
     text-decoration: none;
     font-weight: bold;
+    font-size: 1rem;
     transition: color 0.3s;
   }
 
@@ -47,13 +44,13 @@
     color: var(--primary-color);
   }
 
-  .audio-controls {
+  #audio-controls {
     display: flex;
     align-items: center;
     gap: 0.3rem;
   }
 
-  .audio-controls button {
+  #audio-controls button {
     background: none;
     border: none;
     color: #eee;
@@ -61,8 +58,8 @@
     cursor: pointer;
   }
 
-  .audio-controls button:hover {
-    color: var(--primary-color);
+  #audio-controls input[type="range"] {
+    cursor: pointer;
   }
 
   header {
@@ -96,16 +93,41 @@
   main {
     max-width: 1000px;
     margin: auto;
-    padding: 4rem 1rem;
   }
 
   section {
-    padding: 2rem 0;
+    padding: 4rem 1rem;
+    scroll-margin-top: 60px; /* Pour compenser la hauteur de la barre de navigation */
   }
+
+  #presentation { background-color: var(--background1); }
+  #reglement { background-color: var(--background2); }
+  #nous-rejoindre { background-color: var(--background1); }
+  #contact { background-color: var(--background2); }
 
   h2 {
     color: var(--primary-color);
     margin-bottom: 1rem;
+  }
+
+  ul {
+    padding-left: 1rem;
+  }
+
+  .big-button {
+    font-size: 33px;
+    font-family: 'Georgia', serif; /* Pour un style plus médiéval */
+    background-color: var(--primary-color);
+    color: #222;
+    border: none;
+    border-radius: 8px;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+
+  .big-button:hover {
+    background-color: #ffbf00;
   }
 
   footer {
@@ -118,15 +140,13 @@
 <body>
 
 <nav>
-  <div class="nav-links">
-    <a href="#top">Accueil</a>
-    <a href="#presentation">Présentation</a>
-    <a href="#reglement">Règlement</a>
-    <a href="#nous-rejoindre">Nous rejoindre</a>
-  </div>
-  <div class="audio-controls">
-    <button id="play-stop">▶</button>
-    <input type="range" id="volume-control" min="0" max="1" step="0.01" value="0.3">
+  <a href="#top">Accueil</a>
+  <a href="#presentation">Présentation</a>
+  <a href="#reglement">Règlement</a>
+  <a href="#nous-rejoindre">Nous rejoindre</a>
+  <div id="audio-controls">
+    <button id="playPauseBtn">▶️</button>
+    <input type="range" id="volumeControl" min="0" max="1" step="0.01" value="0.3">
   </div>
 </nav>
 
@@ -143,10 +163,10 @@
   <section id="reglement">
     <h2>Règlement</h2>
     <ul>
-      <li><strong>Respect 🫶🏻</strong> – Le respect est essentiel.</li>
-      <li><strong>MP 📩</strong> – Pas de MP forcés.</li>
-      <li><strong>Pas de haine ✌🏻</strong> – Pas de messages haineux.</li>
-      <li><strong>Salons vocaux 🎤</strong> – Jouons ensemble avec respect.</li>
+      <li><strong>Respect 🫶🏻</strong> – Le respect est essentiel, pour les streamers comme pour la communauté. Tout manque de respect entraînera avertissement ou sanction.</li>
+      <li><strong>MP 📩</strong> – Pas de MP forcés ! Si la personne ne répond pas, n’insistez pas.</li>
+      <li><strong>Pas de haine ✌🏻</strong> – Pas de messages haineux : vous n’êtes pas obligé de suivre un streamer si son contenu ne vous plaît pas.</li>
+      <li><strong>Salons vocaux 🎤</strong> – Les salons sont là pour jouer ensemble : amusez-vous, mais respectez les autres !</li>
     </ul>
   </section>
 
@@ -154,7 +174,9 @@
     <h2>Nous rejoindre</h2>
     <p>Pour nous rejoindre, clique sur le bouton ci-dessous. Le lien Discord apparaîtra et tu pourras le copier !</p>
     <button class="big-button" id="show-link-button">Rejoindre notre Discord</button>
-    <div id="discord-link" class="discord-link">https://discord.gg/DkGXawvzaa</div>
+    <div id="discord-link" class="discord-link" style="display:none;">
+      https://discord.gg/DkGXawvzaa
+    </div>
   </section>
 
   <section id="contact">
@@ -168,35 +190,33 @@
 </footer>
 
 <audio id="background-music" loop>
-  <source src="background-music.mp3" type="audio/mpeg">
+  <source src="public/background-music.mp3" type="audio/mpeg">
   Ton navigateur ne supporte pas l'audio.
 </audio>
 
 <script>
-  const playStopButton = document.getElementById('play-stop');
-  const audio = document.getElementById('background-music');
-  const volumeControl = document.getElementById('volume-control');
+  const playPauseBtn = document.getElementById("playPauseBtn");
+  const audio = document.getElementById("background-music");
+  const volumeControl = document.getElementById("volumeControl");
+  const button = document.getElementById('show-link-button');
+  const linkDiv = document.getElementById('discord-link');
+
   let isPlaying = false;
 
-  playStopButton.addEventListener('click', () => {
-    if (!isPlaying) {
-      audio.play();
-      playStopButton.textContent = '⏹';
-    } else {
+  playPauseBtn.addEventListener("click", () => {
+    if (isPlaying) {
       audio.pause();
-      audio.currentTime = 0;
-      playStopButton.textContent = '▶';
+      playPauseBtn.textContent = "▶️";
+    } else {
+      audio.play();
+      playPauseBtn.textContent = "⏸️";
     }
     isPlaying = !isPlaying;
   });
 
-  volumeControl.addEventListener('input', () => {
+  volumeControl.addEventListener("input", () => {
     audio.volume = volumeControl.value;
   });
-
-  // Discord bouton lien
-  const button = document.getElementById('show-link-button');
-  const linkDiv = document.getElementById('discord-link');
 
   button.addEventListener('click', () => {
     button.style.display = 'none';
@@ -208,6 +228,7 @@
     range.selectNode(linkDiv);
     window.getSelection().removeAllRanges();
     window.getSelection().addRange(range);
+
     try {
       document.execCommand('copy');
       alert('Lien Discord copié !');
