@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>La Taverne des Petits Streamers</title>
+<style>
+  :root {
+    --primary-color: #ffd700;
+    --secondary-color: #333;
+    --background1: #2a2a2a;
+    --background2: #1f1f1f;
+  }
+
+  body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #222;
+    color: #eee;
+    scroll-behavior: smooth;
+  }
+
+  header {
+    background-image: url('https://i.ibb.co/GQt23qdD/taverne-jpeg.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    position: relative;
+  }
+
+  header::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background-color: rgba(0,0,0,0.5);
+  }
+
+  header h1 {
+    position: relative;
+    color: #fff;
+    font-size: 3rem;
+    margin: 0;
+    z-index: 1;
+  }
+
+  nav {
+    position: sticky;
+    top: 0;
+    background-color: rgba(51, 51, 51, 0.95);
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    padding: 1rem;
+    z-index: 10;
+  }
+
+  nav a {
+    color: #eee;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s;
+  }
+
+  nav a:hover {
+    color: var(--primary-color);
+  }
+
+  main {
+    max-width: 1000px;
+    margin: auto;
+  }
+
+  section {
+    padding: 4rem 1rem;
+    scroll-margin-top: 80px;
+  }
+
+  #presentation {
+    background-color: var(--background1);
+  }
+
+  #reglement {
+    background-color: var(--background2);
+  }
+
+  #nous-rejoindre {
+    background-color: var(--background1);
+  }
+
+  #contact {
+    background-color: var(--background2);
+  }
+
+  h2 {
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+  }
+
+  ul {
+    padding-left: 1rem;
+  }
+
+  .big-button {
+    font-size: 33px;
+    font-family: Arial, sans-serif;
+    background-color: var(--primary-color);
+    color: #222;
+    border: none;
+    border-radius: 8px;
+    padding: 1rem 2rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+
+  .big-button:hover {
+    background-color: #ffbf00;
+  }
+
+  .discord-link {
+    display: none;
+    margin-top: 2rem;
+    font-size: 1.5rem;
+    background-color: #333;
+    padding: 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    user-select: all;
+  }
+
+  footer {
+    background-color: var(--secondary-color);
+    text-align: center;
+    padding: 1rem;
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#top">Accueil</a>
+  <a href="#presentation">Présentation</a>
+  <a href="#reglement">Règlement</a>
+  <a href="#nous-rejoindre">Nous rejoindre</a>
+</nav>
+
+<header id="top">
+  <h1>La Taverne des Petits Streamers</h1>
+</header>
+
+<main>
+  <section id="presentation">
+    <h2>Présentation</h2>
+    <p>Nous sommes une communauté soudée de streamers débutants et confirmés. Viens partager tes streams, participer à des événements communautaires et tisser des liens autour de ta passion du jeu vidéo !</p>
+  </section>
+
+  <section id="reglement">
+    <h2>Règlement</h2>
+    <ul>
+      <li><strong>Respect 🫶🏻</strong> – Le respect est essentiel, pour les streamers comme pour la communauté. Tout manque de respect entraînera avertissement ou sanction.</li>
+      <li><strong>MP 📩</strong> – Pas de MP forcés ! Si la personne ne répond pas, n’insistez pas.</li>
+      <li><strong>Pas de haine ✌🏻</strong> – Pas de messages haineux : vous n’êtes pas obligé de suivre un streamer si son contenu ne vous plaît pas.</li>
+      <li><strong>Salons vocaux 🎤</strong> – Les salons sont là pour jouer ensemble : amusez-vous, mais respectez les autres !</li>
+    </ul>
+  </section>
+
+  <section id="nous-rejoindre">
+    <h2>Nous rejoindre</h2>
+    <p>Pour nous rejoindre, clique sur le bouton ci-dessous. Le lien Discord apparaîtra et tu pourras le copier !</p>
+    <button class="big-button" id="show-link-button">
+      Rejoindre notre Discord
+    </button>
+    <div id="discord-link" class="discord-link">
+      https://discord.gg/DkGXawvzaa
+    </div>
+  </section>
+
+  <section id="contact">
+    <h2>Contact</h2>
+    <p>Tu peux nous contacter directement sur Discord !</p>
+  </section>
+</main>
+
+<footer>
+  <p>&copy; 2025 La Taverne des Petits Streamers – Tous droits réservés.</p>
+</footer>
+
+<!-- Musique de fond -->
+<audio id="background-music" autoplay loop>
+  <source src="background-music.mp3" type="audio/mpeg">
+  Ton navigateur ne supporte pas l'audio.
+</audio>
+
+<script>
+  // Révèle le lien Discord au clic
+  const button = document.getElementById('show-link-button');
+  const linkDiv = document.getElementById('discord-link');
+
+  button.addEventListener('click', () => {
+    button.style.display = 'none';
+    linkDiv.style.display = 'block';
+  });
+
+  // Copie le lien Discord au clic
+  linkDiv.addEventListener('click', () => {
+    const range = document.createRange();
+    range.selectNode(linkDiv);
+    window.getSelection().removeAllRanges();
+    window.getSelection().addRange(range);
+
+    try {
+      document.execCommand('copy');
+      alert('Lien Discord copié !');
+    } catch (err) {
+      console.error('Impossible de copier le lien :', err);
+    }
+
+    window.getSelection().removeAllRanges();
+  });
+
+  // Réglage du volume de la musique
+  const audio = document.getElementById("background-music");
+  audio.volume = 0.3; // Volume à 30%
+</script>
+
+</body>
+</html>
